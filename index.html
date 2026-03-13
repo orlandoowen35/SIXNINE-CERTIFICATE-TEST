@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIX NINE | CERTIFICATE TEST</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="racing-container">
+
+<header class="main-header">
+<div class="header-content">
+
+<img src="Sixnine Logo.png" class="logo-racing">
+
+<div class="header-titles">
+<span class="sub-label">// CERTIFICATE TEST</span>
+<h1 id="mainTitle">INTERCEPTOR TEST</h1>
+</div>
+
+</div>
+</header>
+
+<div class="grid-layout">
+
+<section class="card profile-card">
+
+<div class="card-tag">PANEL</div>
+
+<div class="input-grid">
+
+<select id="certType" class="racer-select">
+<option value="INTERCEPTOR">UNIT: INTERCEPTOR (CAR)</option>
+<option value="MARY">UNIT: MARY (BIKE)</option>
+</select>
+
+<input type="text" id="prospectName" placeholder="PROSPECT NAME" class="racer-input">
+<input type="text" id="instructorName" placeholder="INSTRUCTOR NAME" class="racer-input">
+
+</div>
+</section>
+
+
+<section class="card pursuit-card">
+
+<div class="card-tag">PURSUIT TIMER</div>
+
+<div id="pursuitDisplay" class="timer-display main-chrono">
+20:00<span class="ms-small">.00</span>
+</div>
+
+<div class="action-grid">
+<button id="btnStartPursuit" class="btn btn-primary">START PURSUIT</button>
+<button id="btnStopPursuit" class="btn btn-danger" disabled>PAUSE</button>
+</div>
+
+</section>
+
+
+<section class="card vcb-card">
+
+<div class="card-tag">10-99 TIMER</div>
+
+<div id="vcbDisplay" class="timer-display sub-chrono">
+03:00<span class="ms-small">.00</span>
+</div>
+
+<div class="action-grid">
+<button id="btnVCB" class="btn btn-warning" disabled>10-99 START</button>
+<button id="btnFound" class="btn btn-white" disabled>10-99 STOP</button>
+</div>
+
+</section>
+
+
+<section class="card status-card">
+
+<div class="card-tag">VCB COUNT</div>
+
+<div class="counter-box">
+<button onclick="changeVcbCount(-1)" class="ctrl-btn">«</button>
+<div class="count-val" id="vcbCountDisplay">0</div>
+<button onclick="changeVcbCount(1)" class="ctrl-btn">»</button>
+</div>
+
+<div class="action-grid" style="margin-top:15px;">
+<button onclick="setResult('PASS')" class="btn btn-primary">PASS</button>
+<button onclick="setResult('FAILED')" class="btn btn-danger">FAILED</button>
+</div>
+
+</section>
+
+</div>
+
+<footer class="terminal-area">
+
+<div class="card-tag">LOGS</div>
+
+<div id="logArea" class="log-screen"></div>
+
+<button id="btnSave" class="btn btn-sync">SAVE</button>
+
+</footer>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
