@@ -1,133 +1,120 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIX NINE | CERTIFICATE TEST</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIX NINE | CERTIFICATE TEST</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
 <div class="racing-container">
+    <header class="main-header">
+        <div class="header-content">
+            <img src="Sixnine Logo.png" class="logo-racing">
+            <div class="header-titles">
+                <span class="sub-label">// CERTIFICATE TEST</span>
+                <h1 id="mainTitle">INTERCEPTOR TEST</h1>
+            </div>
+        </div>
+    </header>
 
-<header class="main-header">
-<div class="header-content">
+    <div class="grid-layout">
+        <section class="card profile-card">
+            <div class="card-tag">PANEL</div>
+            <div class="input-grid">
+                <select id="certType" class="racer-select">
+                    <option value="INTERCEPTOR">UNIT: INTERCEPTOR (CAR)</option>
+                    <option value="MARY">UNIT: MARY (BIKE)</option>
+                </select>
+                <input type="text" id="prospectName" placeholder="PROSPECT NAME" class="racer-input">
+                <input type="text" id="instructorName" placeholder="INSTRUCTOR NAME" class="racer-input">
+            </div>
+        </section>
 
-<img src="Sixnine Logo.png" class="logo-racing">
+        <section class="card pursuit-card">
+            <div class="card-tag">PURSUIT TIMER</div>
+            <div id="pursuitDisplay" class="timer-display main-chrono">20:00<span class="ms-small">.00</span></div>
+            <div class="adj-panel">
+                <button onclick="adjustPursuit(60000)">+60s</button><button onclick="adjustPursuit(30000)">+30s</button><button onclick="adjustPursuit(1000)">+1s</button>
+                <button onclick="adjustPursuit(-60000)">-60s</button><button onclick="adjustPursuit(-30000)">-30s</button><button onclick="adjustPursuit(-1000)">-1s</button>
+            </div>
+            <div class="action-grid">
+                <button id="btnStartPursuit" class="btn btn-primary">START</button>
+                <button id="btnStopPursuit" class="btn btn-danger" disabled>PAUSE</button>
+            </div>
+        </section>
 
-<div class="header-titles">
-<span class="sub-label">// CERTIFICATE TEST</span>
-<h1 id="mainTitle">INTERCEPTOR TEST</h1>
+        <section class="card vcb-card">
+            <div class="card-tag">10-99 TIMER</div>
+            <div id="vcbDisplay" class="timer-display sub-chrono">03:00<span class="ms-small">.00</span></div>
+            <div class="adj-panel">
+                <button onclick="adjustVCB(60000)">+60s</button><button onclick="adjustVCB(30000)">+30s</button><button onclick="adjustVCB(1000)">+1s</button>
+                <button onclick="adjustVCB(-60000)">-60s</button><button onclick="adjustVCB(-30000)">-30s</button><button onclick="adjustVCB(-1000)">-1s</button>
+            </div>
+            <div class="action-grid">
+                <button id="btnVCB" class="btn btn-warning" disabled>10-99 START</button>
+                <button id="btnFound" class="btn btn-white" disabled>10-99 STOP</button>
+            </div>
+        </section>
+
+        <section class="card status-card">
+            <div class="card-tag">VCB COUNT</div>
+            <div class="counter-box">
+                <button onclick="changeVcbCount(-1)" class="ctrl-btn">«</button>
+                <div class="count-val" id="vcbCountDisplay">0</div>
+                <button onclick="changeVcbCount(1)" class="ctrl-btn">»</button>
+            </div>
+            <div class="action-grid" style="margin-top:15px;">
+                <button onclick="setResult('PASS')" class="btn btn-primary">PASS</button>
+                <button onclick="setResult('FAILED')" class="btn btn-danger">FAILED</button>
+            </div>
+        </section>
+    </div>
+
+    <footer class="terminal-area">
+        <div class="card-tag">LOGS</div>
+        <div id="logArea" class="log-screen"></div>
+        <div class="action-grid" style="margin-top:20px;">
+            <button id="btnSave" class="btn btn-sync">SAVE DATA</button>
+            <button id="btnHistory" class="btn btn-white">VIEW HISTORY</button>
+        </div>
+    </footer>
 </div>
 
-</div>
-</header>
+<div id="historyModal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <div class="card-tag">EXAMINATION HISTORY</div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>DATE</th>
+                        <th>PROSPECT</th>
+                        <th>INSTRUCTOR</th>
+                        <th>VCB</th>
+                        <th>REM. PURSUIT</th>
+                        <th>REM. 10-99</th>
+                        <th>RESULT</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody"></tbody>
+            </table>
+        </div>
+        
+        <div class="pagination-ctrl">
+            <button onclick="prevPage()" id="btnPrev" class="btn-page">PREV</button>
+            <span id="pageInfo">PAGE 1</span>
+            <button onclick="nextPage()" id="btnNext" class="btn-page">NEXT</button>
+        </div>
 
-<div class="grid-layout">
-
-<section class="card profile-card">
-
-<div class="card-tag">PANEL</div>
-
-<div class="input-grid">
-
-<select id="certType" class="racer-select">
-<option value="INTERCEPTOR">UNIT: INTERCEPTOR (CAR)</option>
-<option value="MARY">UNIT: MARY (BIKE)</option>
-</select>
-
-<input type="text" id="prospectName" placeholder="PROSPECT NAME" class="racer-input">
-<input type="text" id="instructorName" placeholder="INSTRUCTOR NAME" class="racer-input">
-
-</div>
-</section>
-
-
-<section class="card pursuit-card">
-
-<div class="card-tag">PURSUIT TIMER</div>
-
-<div id="pursuitDisplay" class="timer-display main-chrono">
-20:00<span class="ms-small">.00</span>
-</div>
-
-<div class="adj-panel">
-<button onclick="adjustPursuit(60000)">+60s</button>
-<button onclick="adjustPursuit(30000)">+30s</button>
-<button onclick="adjustPursuit(1000)">+1s</button>
-
-<button onclick="adjustPursuit(-60000)">-60s</button>
-<button onclick="adjustPursuit(-30000)">-30s</button>
-<button onclick="adjustPursuit(-1000)">-1s</button>
-</div>
-
-<div class="action-grid">
-<button id="btnStartPursuit" class="btn btn-primary">START PURSUIT</button>
-<button id="btnStopPursuit" class="btn btn-danger" disabled>PAUSE</button>
-</div>
-
-</section>
-
-
-<section class="card vcb-card">
-
-<div class="card-tag">10-99 TIMER</div>
-
-<div id="vcbDisplay" class="timer-display sub-chrono">
-03:00<span class="ms-small">.00</span>
-</div>
-
-<div class="adj-panel">
-<button onclick="adjustVCB(60000)">+60s</button>
-<button onclick="adjustVCB(30000)">+30s</button>
-<button onclick="adjustVCB(1000)">+1s</button>
-
-<button onclick="adjustVCB(-60000)">-60s</button>
-<button onclick="adjustVCB(-30000)">-30s</button>
-<button onclick="adjustVCB(-1000)">-1s</button>
-</div>
-
-<div class="action-grid">
-<button id="btnVCB" class="btn btn-warning" disabled>10-99 START</button>
-<button id="btnFound" class="btn btn-white" disabled>10-99 STOP</button>
-</div>
-
-</section>
-
-
-<section class="card status-card">
-
-<div class="card-tag">VCB COUNT</div>
-
-<div class="counter-box">
-<button onclick="changeVcbCount(-1)" class="ctrl-btn">«</button>
-<div class="count-val" id="vcbCountDisplay">0</div>
-<button onclick="changeVcbCount(1)" class="ctrl-btn">»</button>
-</div>
-
-<div class="action-grid" style="margin-top:15px;">
-<button onclick="setResult('PASS')" class="btn btn-primary">PASS</button>
-<button onclick="setResult('FAILED')" class="btn btn-danger">FAILED</button>
-</div>
-
-</section>
-
-</div>
-
-<footer class="terminal-area">
-
-<div class="card-tag">LOGS</div>
-
-<div id="logArea" class="log-screen"></div>
-
-<button id="btnSave" class="btn btn-sync">SAVE</button>
-
-</footer>
-
+        <div class="action-grid" style="margin-top:20px;">
+            <button onclick="clearHistory()" class="btn btn-danger" style="font-size: 0.6rem;">CLEAR ALL</button>
+            <button onclick="closeHistory()" class="btn btn-white">CLOSE</button>
+        </div>
+    </div>
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
