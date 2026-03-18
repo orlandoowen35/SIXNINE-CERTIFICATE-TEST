@@ -1,4 +1,5 @@
-let pursuitTime = 1200000, vcbTime = 180000;
+let pursuitTime = 1200000; // Default 20 Menit
+let vcbTime = 180000;
 let pursuitInterval, vcbInterval;
 let vcbCount = 0, logs = [], resultStatus = "UNSET";
 
@@ -13,6 +14,19 @@ const btnStart = document.getElementById("btnStartPursuit");
 const btnStop = document.getElementById("btnStopPursuit");
 const btnVCB = document.getElementById("btnVCB");
 const btnFound = document.getElementById("btnFound");
+const certType = document.getElementById("certType");
+
+// LOGIKA OTOMATIS GANTI TIMER BERDASARKAN UNIT
+certType.onchange = function() {
+    if (this.value === "MARY") {
+        pursuitTime = 600000; // 10 Menit untuk Motor
+        addLog("UNIT CHANGED: MARY (TIMER SET TO 10:00)");
+    } else {
+        pursuitTime = 1200000; // 20 Menit untuk Mobil
+        addLog("UNIT CHANGED: INTERCEPTOR (TIMER SET TO 20:00)");
+    }
+    updateUI();
+};
 
 function formatTime(ms){
     const totalSeconds = Math.floor(ms/1000);
@@ -69,28 +83,33 @@ function adjustVCB(ms){ vcbTime = Math.max(0, vcbTime + ms); vDisp.innerHTML = f
 function changeVcbCount(n){ vcbCount = Math.max(0, vcbCount + n); vCountDisp.innerText = vcbCount; }
 function setResult(res){ resultStatus = res; addLog(`RESULT: ${res}`); }
 function addLog(msg){
+    const logArea = document.getElementById("logArea");
     const logEntry = `> ${msg}`;
-    document.getElementById("logArea").innerHTML += `<div>${logEntry}</div>`;
+    logArea.innerHTML += `<div>${logEntry}</div>`;
     logs.push(logEntry);
-    document.getElementById("logArea").scrollTop = 9999;
+    logArea.scrollTop = logArea.scrollHeight;
 }
 
 // LOGIKA HISTORY & PAGINATION
 function saveToLocal() {
     const pName = document.getElementById("prospectName").value || "Unknown";
     const iName = document.getElementById("instructorName").value || "Unknown";
-    const unit = document.getElementById("certType").value;
+    const unit = document.getElementById("certType").value; // Mengambil Mary atau Interceptor
     let data = JSON.parse(localStorage.getItem("sixnine_history")) || [];
 
     data.push({
         date: new Date().toLocaleString('id-ID'),
-        prospect: pName, instructor: iName,
-        vcb: vcbCount, pursuitRemain: formatLogTime(pursuitTime),
-        vcbRemain: formatLogTime(vcbTime), result: resultStatus
+        prospect: pName, 
+        instructor: iName,
+        unit: unit, // Menyimpan Info Unit
+        vcb: vcbCount, 
+        pursuitRemain: formatLogTime(pursuitTime),
+        vcbRemain: formatLogTime(vcbTime), 
+        result: resultStatus
     });
 
     localStorage.setItem("sixnine_history", JSON.stringify(data));
-    alert("DATA SAVED!");
+    alert(`DATA SAVED FOR ${unit}!`);
 }
 
 function showHistory() {
@@ -99,7 +118,6 @@ function showHistory() {
     const body = document.getElementById("historyBody");
     body.innerHTML = "";
 
-    // Kalkulasi data yang muncul di page ini
     const start = (currentPage - 1) * rowsPerPage;
     const end = start + rowsPerPage;
     const paginatedItems = sortedData.slice(start, end);
@@ -107,8 +125,7 @@ function showHistory() {
     paginatedItems.forEach(item => {
         body.innerHTML += `<tr>
             <td>${item.date}</td>
-            <td>${item.prospect}</td>
-            <td>${item.instructor}</td>
+            <td>${item.prospect} (${item.unit})</td> <td>${item.instructor}</td>
             <td>${item.vcb}</td>
             <td>${item.pursuitRemain}</td>
             <td>${item.vcbRemain}</td>
@@ -124,7 +141,6 @@ function showHistory() {
 
 function nextPage() { currentPage++; showHistory(); }
 function prevPage() { currentPage--; showHistory(); }
-
 function closeHistory() { document.getElementById("historyModal").classList.add("hidden"); currentPage = 1; }
 function clearHistory() { if(confirm("WIPE ALL DATA?")) { localStorage.removeItem("sixnine_history"); showHistory(); } }
 
